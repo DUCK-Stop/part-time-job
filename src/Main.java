@@ -1,15 +1,21 @@
 import enums.Identity;
 import model.User;
+import model.Job;
 import service.UserService;
 import service.UserServiceImp;
+import service.JobService;
+import service.JobServicelmp;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private static UserService userService = new UserServiceImp();//不绑定单一实现，可指向其他可实现类
+    private static JobService jobService = new JobServicelmp();
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+
+   public static void main(String[] args) {
         while (true) {
             System.out.println("\n====== 兼职招聘系统 ======");
             System.out.println("1. 注册");
@@ -74,8 +80,9 @@ public class Main {
         while (true) {
             System.out.println("\n====== 发布者菜单 ======");
             System.out.println("1. 浏览所有岗位");
-            System.out.println("2. 搜索岗位");
-            System.out.println("3. 退出登录");
+            System.out.println("2. 发布岗位");
+            System.out.println("3. 搜索岗位");
+            System.out.println("4. 退出登录");
             System.out.println("0. 退出程序");
             System.out.println("========================");
             System.out.print("请选择：");
@@ -84,9 +91,10 @@ public class Main {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> System.out.println("（功能待实现）");
-                case 2 -> System.out.println("（功能待实现）");
-                case 3 -> {
+                case 1 -> showAllJobs();
+                case 2 -> publishJob(user);
+                case 3 -> searchJobs();
+                case 4 -> {
                     System.out.println("已退出登录");
                     return;
                 }
@@ -113,8 +121,8 @@ public class Main {
             scanner.nextLine();
 
             switch (choice) {
-                case 1 -> System.out.println("（功能待实现）");
-                case 2 -> System.out.println("（功能待实现）");
+                case 1 -> showAllJobs();
+                case 2 -> searchJobs();
                 case 3 -> {
                     System.out.println("已退出登录");
                     return;
@@ -125,6 +133,62 @@ public class Main {
                 }
                 default -> System.out.println("无效选项");
             }
+        }
+    }
+
+    //展示所有岗位
+    private static void showAllJobs() {
+        List<Job> jobs = jobService.showAllJob();
+        if (jobs == null || jobs.isEmpty()) {
+            System.out.println("暂无岗位信息");
+            return;
+        }
+        for (Job job : jobs) {
+            System.out.println(job);
+            System.out.println("------------------------");
+        }
+    }
+
+    //发布岗位
+    private static void publishJob(User user) {
+        System.out.print("请输入岗位名称：");
+        String name = scanner.nextLine();
+        System.out.print("请输入工作内容：");
+        String content = scanner.nextLine();
+        System.out.print("请输入岗位要求：");
+        String requirement = scanner.nextLine();
+        System.out.print("请输入薪酬（/h）：");
+        double salary = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("请输入单位：");
+        String unit = scanner.nextLine();
+        System.out.print("请输入招聘人数：");
+        int number = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("请输入工作时间：");
+        String workTime = scanner.nextLine();
+        System.out.print("请输入工作地点：");
+        String location = scanner.nextLine();
+        System.out.print("请输入截止时间：");
+        String deadline = scanner.nextLine();
+
+        String result = jobService.publishJob(name, content, requirement, salary,
+                unit, number, workTime, location, deadline, user.getUserId());
+        System.out.println(result);
+    }
+
+    //搜索岗位
+    private static void searchJobs() {
+        System.out.print("请输入关键词：");
+        String keyword = scanner.nextLine();
+        List<Job> result = jobService.searchJob(keyword);
+        if (result == null || result.isEmpty()) {
+            System.out.println("未找到匹配的岗位");
+            return;
+        }
+        for (Job job : result) {
+            System.out.println(job);
+            System.out.println("------------------------");
         }
     }
 }

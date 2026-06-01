@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class UserServiceImp implements UserService {
 
-    //创建智能数组储存用户
+    //创建列表储存用户
     private List<User> users = new ArrayList<>();
 
     @Override
