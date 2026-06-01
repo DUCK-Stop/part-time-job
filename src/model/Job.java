@@ -5,7 +5,7 @@ public class Job {
 
     private int jobId;
     private String jobName;
-    private String jonContent;
+    private String jobContent;
     private String requirement;
     private double salary;
     private String unit;
@@ -24,7 +24,7 @@ public class Job {
                int publisherId) {
         this.jobId = jobId;
         this.jobName = jobName;
-        this.jonContent = content;
+        this.jobContent = content;
         this.requirement = requirement;
         this.salary = salary;
         this.unit = unit;
@@ -49,7 +49,7 @@ public class Job {
     // getter
     public int getJobId() { return jobId; }
     public String getJobName() { return jobName; }
-    public String getContent() { return jonContent; }
+    public String getContent() { return jobContent; }
     public String getRequirement() { return requirement; }
     public double getSalary() { return salary; }
     public String getUnit() { return unit; }
@@ -61,7 +61,7 @@ public class Job {
 
     // setter
     public void setJobName(String jobName) { this.jobName = jobName; }
-    public void setContent(String content) { this.jonContent = content; }
+    public void setContent(String content) { this.jobContent = content; }
     public void setRequirement(String requirement) { this.requirement = requirement; }
     public void setSalary(double salary) { this.salary = salary; }
     public void setUnit(String unit) { this.unit = unit; }
@@ -75,7 +75,7 @@ public class Job {
     public String toString() {
         return "单号：" + jobId + "\n" +
                "名称：" + jobName + "\n" +
-               "内容：" + jonContent + "\n" +
+               "内容：" + jobContent + "\n" +
                "要求：" + requirement + "\n" +
                "薪酬：" + salary + "\n" +
                "单位：" + unit + "\n" +

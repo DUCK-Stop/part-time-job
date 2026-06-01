@@ -1,5 +1,5 @@
 package enums;
-public enum Identity
-{
-    Publisher,Taker;
+
+public enum Identity {
+    Publisher, Taker;
 }

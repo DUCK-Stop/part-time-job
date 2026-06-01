@@ -1,6 +1,5 @@
 package service;
 
-import enums.Identity;
 import model.Job;
 import model.User;
 

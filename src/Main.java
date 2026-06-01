@@ -1,6 +1,7 @@
 import enums.Identity;
 import model.User;
 import model.Job;
+import model.Publisher;
 import service.UserService;
 import service.UserServiceImp;
 import service.JobService;
@@ -10,10 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static UserService userService = new UserServiceImp();//不绑定单一实现，可指向其他可实现类
+    private static UserService userService = new UserServiceImp();
     private static JobService jobService = new JobServicelmp();
     private static Scanner scanner = new Scanner(System.in);
-
 
    public static void main(String[] args) {
         while (true) {
@@ -24,8 +24,8 @@ public class Main {
             System.out.println("========================");
             System.out.print("请选择：");
 
-            int choice = scanner.nextInt();//读取第一位数字
-            scanner.nextLine(); // 消费换行
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1 -> register();
@@ -50,8 +50,8 @@ public class Main {
         System.out.println("请选择身份：1. 发布者  2. 求职者");
         int roleChoice = scanner.nextInt();
         scanner.nextLine();
-        Identity identity = (roleChoice == 1) ? Identity.Publisher : Identity.Taker;
 
+        Identity identity = (roleChoice == 1) ? Identity.Publisher : Identity.Taker;
         String result = userService.register(name, phone, password, identity);
         System.out.println(result);
     }
@@ -69,7 +69,7 @@ public class Main {
         }
 
         System.out.println("登录成功！欢迎 " + user.getName());
-        if (user.getIdentity() == Identity.Publisher) {
+        if (user instanceof Publisher) {
             showPublisherMenu(user);
         } else {
             showTakerMenu(user);
@@ -136,7 +136,6 @@ public class Main {
         }
     }
 
-    //展示所有岗位
     private static void showAllJobs() {
         List<Job> jobs = jobService.showAllJob();
         if (jobs == null || jobs.isEmpty()) {
@@ -149,7 +148,6 @@ public class Main {
         }
     }
 
-    //发布岗位
     private static void publishJob(User user) {
         System.out.print("请输入岗位名称：");
         String name = scanner.nextLine();
@@ -177,7 +175,6 @@ public class Main {
         System.out.println(result);
     }
 
-    //搜索岗位
     private static void searchJobs() {
         System.out.print("请输入关键词：");
         String keyword = scanner.nextLine();
