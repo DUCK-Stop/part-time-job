@@ -28,5 +28,8 @@ bin/
 ### VS Code ###
 .vscode/
 
+### 配置文件（含真实密码，不上传）###
+config.properties
+
 ### Mac OS ###
 .DS_Store
