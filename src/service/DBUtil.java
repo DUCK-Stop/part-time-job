@@ -1,6 +1,6 @@
 package service;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +17,7 @@ public class DBUtil {
     //读取properties文件获取密码
     static {
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("config.properties")) {
+        try (InputStream fis = DBUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
             props.load(fis);
         } catch (IOException e) {
             throw new RuntimeException("找不到 config.properties，请确认文件在项目根目录", e);
