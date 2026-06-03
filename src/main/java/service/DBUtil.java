@@ -1,5 +1,7 @@
 package service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,10 +22,24 @@ public class DBUtil {
     //读取properties文件获取密码
     static {
         Properties props = new Properties();
-        try (InputStream fis = DBUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
-            props.load(fis);
-        } catch (IOException e) {
-            throw new RuntimeException("找不到 config.properties，请确认文件在项目根目录", e);
+        // 优先读取 JAR 外部同目录的 config.properties
+        File externalFile = new File("config.properties");
+        if (externalFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(externalFile)) {
+                props.load(fis);
+            } catch (IOException e) {
+                throw new RuntimeException("读取外部 config.properties 失败", e);
+            }
+        } else {
+            // 回退到 classpath 内的配置（开发时用）
+            try (InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
+                if (is == null) {
+                    throw new RuntimeException("找不到 config.properties，请将 config.example.properties 改名为 config.properties 并填写配置");
+                }
+                props.load(is);
+            } catch (IOException e) {
+                throw new RuntimeException("读取 config.properties 失败", e);
+            }
         }
 
         // 建立 SSH 隧道
