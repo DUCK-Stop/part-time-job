@@ -7,6 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
 public class DBUtil {
     //三个静态常量
     private static final String URL;
@@ -21,6 +24,27 @@ public class DBUtil {
             props.load(fis);
         } catch (IOException e) {
             throw new RuntimeException("找不到 config.properties，请确认文件在项目根目录", e);
+        }
+
+        // 建立 SSH 隧道
+        try {
+            JSch jsch = new JSch();
+            Session session = jsch.getSession(
+                props.getProperty("ssh.user"),
+                props.getProperty("ssh.host"),
+                Integer.parseInt(props.getProperty("ssh.port"))
+            );
+            session.setPassword(props.getProperty("ssh.password"));
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect();
+            session.setServerAliveInterval(30000);
+            session.setPortForwardingL(
+                Integer.parseInt(props.getProperty("ssh.localPort")),
+                props.getProperty("ssh.remoteHost"),
+                Integer.parseInt(props.getProperty("ssh.remotePort"))
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("SSH 隧道建立失败", e);
         }
 
         URL = props.getProperty("db.url");
