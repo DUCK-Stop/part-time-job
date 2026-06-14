@@ -82,7 +82,9 @@ public class Main {
             System.out.println("1. 浏览所有岗位");
             System.out.println("2. 发布岗位");
             System.out.println("3. 搜索岗位");
-            System.out.println("4. 退出登录");
+            System.out.println("4. 删除发布岗位");
+            System.out.println("5. 修改发布岗位");
+            System.out.println("6. 退出登录");
             System.out.println("0. 退出程序");
             System.out.println("========================");
             System.out.print("请选择：");
@@ -94,7 +96,9 @@ public class Main {
                 case 1 -> showAllJobs();
                 case 2 -> publishJob(user);
                 case 3 -> searchJobs();
-                case 4 -> {
+                case 4 -> deleteJob(user);
+                case 5 -> updateJob(user);
+                case 6 -> {
                     System.out.println("已退出登录");
                     return;
                 }
@@ -187,5 +191,45 @@ public class Main {
             System.out.println(job);
             System.out.println("------------------------");
         }
+    }
+
+    private static void deleteJob(User user){
+        System.out.print("请输入要删除的岗位单号:");
+        int jobId = scanner.nextInt();//读取
+        scanner.nextLine();//消耗换行符
+
+        //分层调用服务层的接口
+        String result = jobService.deleteJob(jobId,user.getUserId());
+        System.out.println(result);
+    }
+
+    private static void updateJob(User user) {
+        System.out.print("请输入要修改的岗位单号：");
+        int jobId = scanner.nextInt();
+        scanner.nextLine();//nextInt后需要吃掉换行符
+        System.out.print("请输入岗位名称：");
+        String name = scanner.nextLine();
+        System.out.print("请输入工作内容：");
+        String content = scanner.nextLine();
+        System.out.print("请输入岗位要求：");
+        String requirement = scanner.nextLine();
+        System.out.print("请输入薪酬（/h）：");
+        double salary = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("请输入单位：");
+        String unit = scanner.nextLine();
+        System.out.print("请输入招聘人数：");
+        int number = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("请输入工作时间：");
+        String workTime = scanner.nextLine();
+        System.out.print("请输入工作地点：");
+        String location = scanner.nextLine();
+        System.out.print("请输入截止时间：");
+        String deadline = scanner.nextLine();
+
+        String result = jobService.updateJob(name, content, requirement, salary,
+                unit, number, workTime, location, deadline, jobId,user.getUserId());
+        System.out.println(result);
     }
 }

@@ -1,5 +1,6 @@
 package service;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import model.Job;
 
 import java.sql.Connection;
@@ -115,7 +116,41 @@ public class JobServicelmp implements JobService {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return "数据库异常，发布失败";
+            return "数据库异常，发布失败!";
+        }
+    }
+
+    @Override
+    public String updateJob(String jobName, String content, String requirement, double salary,
+                             String unit, int number, String workTime, String location, String deadline,
+                             int jobId,int publisherId) {
+        String sql = "UPDATE jobs SET jobName=?, jobContent=?, requirement=?, salary=?, unit=?, number=?, workTime=?, location=?, deadline=? WHERE jobId=? AND publisherId=?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, jobName);
+            ps.setString(2, content);
+            ps.setString(3, requirement);
+            ps.setDouble(4, salary);
+            ps.setString(5, unit);
+            ps.setInt(6, number);
+            ps.setString(7, workTime);
+            ps.setString(8, location);
+            ps.setString(9, deadline);
+            ps.setInt(10, jobId);
+            ps.setInt(11,publisherId);
+
+            //有权限检验
+            int r = ps.executeUpdate();
+            if (r > 0) {
+                return "已修改完成!";
+            }else {
+                return "修改失败！岗位不存在或非发布人";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "数据库异常，修改失败!";
         }
     }
 
@@ -162,4 +197,28 @@ public class JobServicelmp implements JobService {
         }
     }
 
+    @Override
+    public String deleteJob(int jobId,int publisherId) {
+        String sql = "DELETE FROM jobs WHERE jobId = ? AND publisherId = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            //填入占位符
+            ps.setInt(1, jobId);
+            ps.setInt(2, publisherId);
+
+            //检测数据库是否更新成功（因为有条件判断）
+            int r = ps.executeUpdate();
+            if (r > 0) {
+                return "删除成功";
+            } else {
+                return "删除失败！岗位不存在或非发布人";
+            }
+        }
+            catch (SQLException e) {
+            e.printStackTrace();
+            return "数据库异常，删除失败";
+        }
+    }
 }
