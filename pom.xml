@@ -40,7 +40,6 @@
 
     <build>
         <plugins>
-            <!-- 打包时把依赖也打进去，生成可独立运行的 fat jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

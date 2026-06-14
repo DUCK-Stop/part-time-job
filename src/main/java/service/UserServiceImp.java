@@ -15,13 +15,14 @@ public class UserServiceImp implements UserService {
     @Override
     public String register(String name, String phoneNumber, String password, Identity identity) {
         // 第一步：查手机号是否已注册
+        //
         String checkSql = "SELECT COUNT(*) FROM users WHERE phoneNumber = ?";
 
         try (Connection conn = DBUtil.getConnection();//使用工具类加载驱动并连接MySQL
              PreparedStatement psCheck = conn.prepareStatement(checkSql)) {
 
             psCheck.setString(1, phoneNumber);//把用户输入填入第一个占位符
-            ResultSet rs = psCheck.executeQuery();//将组装好的SQL发送给数据库并 查询
+            ResultSet rs = psCheck.executeQuery();//将组装好的SQL发送给数据库并查询
             rs.next();// 定位到数据行（第一行）
             int count = rs.getInt(1);//读取当前行的第一列的数字
             rs.close();//关闭rs结果集
@@ -30,7 +31,7 @@ public class UserServiceImp implements UserService {
                 return "不可重复注册手机号";
             }
         } catch (SQLException e) {//catch数据库相关异常
-            e.printStackTrace();//打印错误详情
+            e.printStackTrace();//打印错误到控制台
             return "数据库异常，注册失败";
         }
 

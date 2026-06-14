@@ -35,7 +35,5 @@ target/
 .env
 
 ### 配置文件（含真实密码，不上传）###
-
-
-### Mac OS ###
-.DS_Store
+ssh.sh
+config.properties

@@ -13,14 +13,16 @@ public class JobServicelmp implements JobService {
 
     @Override
     public Job getJobInfo(int jobId) {
+        //sql语句：查询jobs表中的jobId字段，使用占位符
         String sql = "SELECT * FROM jobs WHERE jobId = ?";
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection();//链接数据库
+             PreparedStatement ps = conn.prepareStatement(sql)) {//预编译sql语句
 
-            ps.setInt(1, jobId);
-            ResultSet rs = ps.executeQuery();
+            ps.setInt(1, jobId);//将jobId填入占位符
+            ResultSet rs = ps.executeQuery();//通过jobId执行查询并返回结果集rs
 
+            //如果rs有数据，创建job对象并填入rs结果集里的数据
             if (rs.next()) {
                 Job job = new Job(
                         rs.getInt("jobId"),
@@ -42,23 +44,23 @@ public class JobServicelmp implements JobService {
             rs.close();
             return null;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {//catch数据库相关异常
+            e.printStackTrace();//打印到控制台
             return null;
         }
     }
 
     @Override
     public List<Job> showAllJob() {
-        String sql = "SELECT * FROM jobs";
+        String sql = "SELECT * FROM jobs";//查询 jobs表
         List<Job> result = new ArrayList<>();
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection();//连接数据库
+             PreparedStatement ps = conn.prepareStatement(sql)) {//预编译sql语句
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();//执行查询并返回结果集
 
-            while (rs.next()) {
+            while (rs.next()) {//循环创建job对象
                 Job job = new Job(
                         rs.getInt("jobId"),
                         rs.getString("jobName"),
