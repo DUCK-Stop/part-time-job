@@ -36,6 +36,7 @@ target/
 
 ### reasonix ###
 .reasonix
+reasonix.md
 
 ### 配置文件（含真实密码，不上传）###
 ssh.sh

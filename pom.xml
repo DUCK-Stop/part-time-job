@@ -30,12 +30,6 @@
             <version>9.2.0</version>
         </dependency>
 
-        <!-- JSch：SSH 隧道（新版 fork，包名不变） -->
-        <dependency>
-            <groupId>com.github.mwiede</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.2.23</version>
-        </dependency>
     </dependencies>
 
     <build>
