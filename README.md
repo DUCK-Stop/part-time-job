@@ -2,6 +2,8 @@
 
 Java 14 控制台应用，基于 Maven + MySQL，通过 Shell 脚本建立 SSH 隧道连接远程数据库，实现用户注册登录、岗位的增删改查、关键词搜索等功能。
 
+https://github.com/DUCK-Stop/part-time-job.git
+
 ## 技术栈
 
 | 组件 | 版本 / 说明                                      |

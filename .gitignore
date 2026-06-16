@@ -28,6 +28,9 @@ bin/
 ### VS Code ###
 .vscode/
 
+### 无关文件夹 ###
+display/
+
 ### Maven ###
 target/
 
@@ -41,3 +44,4 @@ reasonix.md
 ### 配置文件（含真实密码，不上传）###
 ssh.sh
 config.properties
+ssh.bat
