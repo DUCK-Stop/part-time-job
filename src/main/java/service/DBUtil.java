@@ -14,7 +14,7 @@ public class DBUtil {
 
     static {
         Properties props = new Properties();
-        // 从 classpath 加载 config.properties
+        //config.properties
         try (InputStream is = DBUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
             if (is == null) {
                 throw new RuntimeException("找不到 config.properties 文件，请确保它位于 src/main/resources/");
